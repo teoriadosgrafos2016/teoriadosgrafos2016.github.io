@@ -36,17 +36,20 @@
 
     <!-- Navigation
     ================================================== -->
-    <nav class="navbar navbar-dark bg-inverse bg-inverse-custom navbar-fixed-top">
+    <nav class="navbar-fixed-top navbar-dark bg-inverse">
       <div class="container">
         <a class="navbar-toggler hidden-md-up pull-xs-right" data-toggle="collapse" href="#collapsingNavbar" aria-expanded="false" aria-controls="collapsingNavbar">
         &#9776;
+      </a>
+        <a class="navbar-toggler navbar-toggler-custom hidden-md-up pull-xs-right" data-toggle="collapse" href="#collapsingMobileUser" aria-expanded="false" aria-controls="collapsingMobileUser">
+          <span class="icon-user"></span>
         </a>
         <div id="collapsingNavbar" class="collapse navbar-toggleable-custom" role="tabpanel" aria-labelledby="collapsingNavbar">
           <ul class="nav navbar-nav pull-xs-right">
-            <li class="nav-item nav-item-toggable active">
+            <li class="nav-item nav-item-toggable">
               <a class="nav-link" href="./index.html">Início<span class="sr-only">Inicio</span></a>
             </li>
-            <li class="nav-item nav-item-toggable">
+            <li class="nav-item nav-item-toggable active">
               <a class="nav-link" href="./about.html">Sobre</a>
             </li>
           </ul>
@@ -54,21 +57,13 @@
       </div>
     </nav>
 
-    <!-- Hero Section
-    ================================================== -->
-    <header class="jumbotron bg-inverse text-xs-center center-vertically" role="banner">
-      <div class="container">
-        <h1 class="display-3">Teoria dos Grafos</h1>
-        <h2 class="m-b-3">Bacharelado em Ciência da Computação - UFSCar</h2>
-        <!-- <a class="btn btn-secondary-outline m-b-1" href="#" role="button"><span class="icon-sketch"></span>Sketch included</a> -->
-      </div>
-    </header>
+    <hr class="invisible">
 
     <!-- Text Content
     ================================================== -->
     <section class="section-text">
       <div class="container">
-        <h3 class="text-xs-center">Aplicações dos algoritmos</h3>
+        <h3 class="text-xs-center">Sobre</h3>
         <div class="row p-y-3">
           <div class="col-md-5">
             <p class="wp wp-7">A posuere donec senectus suspendisse bibendum magna ridiculus a justo orci parturient suspendisse ad rhoncus cursus ut parturient viverra elit aliquam ultrices est sem. Tellus nam ad fermentum ac enim est duis facilisis congue a lacus adipiscing consequat risus consectetur scelerisque integer suspendisse a mus integer elit massa ut.</p>
@@ -79,55 +74,9 @@
         </div>
       </div>
     </section>
-    <!-- News
-    ================================================== -->
-    <section class="section-news">
-      <div class="container">
-        <h3 class="sr-only">News</h3>
-        <div class="bg-inverse">
-          <div class="row">
-            <div class="col-md-6 p-r-0">
-              <figure class="has-light-mask m-b-0 image-effect">
-                <img src="img/Grafos/2.jpg" alt="Article thumbnail" class="img-fluid">
-              </figure>
-            </div>
-            <div class="col-md-6 p-l-0">
-              <article class="center-block">
-                <!-- <span class="label label-info">Featured article</span> -->
-                <br>
-                <h5><a href="./caminhadasAleatorias.html">Caminhadas Aleatórias<span class="icon-arrow-right"></span></a></h5>
-                <p class="m-b-0">
-                  <a href="#"><span class="label label-default text-uppercase"><span class="icon-tag"></span> Design Studio</span></a>
-                  <a href="#"><span class="label label-default text-uppercase"><span class="icon-time"></span> 1 Hour Ago</span></a>
-                </p>
-              </article>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 col-md-push-6 p-l-0">
-              <figure class="has-light-mask m-b-0 image-effect">
-                <img src="img/Grafos/1.jpg" alt="Article thumbnail" class="img-fluid">
-              </figure>
-            </div>
-            <div class="col-md-6 col-md-pull-6 p-r-0">
-              <article class="center-block">
-                <!-- <span class="label label-info">Featured article</span> -->
-                <br>
-                <h5><a href="./mst.html">Árvores Geradoras Mínimas<span class="icon-arrow-right"></span></a></h5>
-                <p class="m-b-0">
-                  <a href="#"><span class="label label-default text-uppercase"><span class="icon-tag"></span> Design Studio</span></a>
-                  <a href="#"><span class="label label-default text-uppercase"><span class="icon-time"></span> 1 Hour Ago</span></a>
-                </p>
-              </article>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- Footer
     ================================================== -->
-
     <footer class="section-footer bg-inverse" role="contentinfo">
       <!-- <div class="container">
         <div class="row">
@@ -139,12 +88,12 @@
               <small class="media-body media-bottom">
                 &copy; Land.io 2015. <br>
                 Designed by Peter Finlan, developed by Taty Grassini, exclusively for Codrops.
-                </small>
+              </small>
             </div>
           </div>
           <div class="col-md-6 col-lg-7">
             <ul class="nav nav-inline">
-              <li class="nav-item active">
+              <li class="nav-item">
                 <a class="nav-link" href="./index-carousel.html"><small>NEW</small> Slides<span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item"><a class="nav-link" href="ui-elements.html">UI Kit</a></li>
