@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Caixeiro Viajante</title>
+
+    <meta name="msapplication-TileColor" content="#05162a">
+    <meta name="theme-color" content="#05162a">
+    <link rel="stylesheet" href="css/landio.css">
+  </head>
+
+  <body>
+
+    <!-- Navigation
+    ================================================== -->
+    <nav class="navbar-fixed-top navbar-dark bg-inverse">
+      <div class="container">
+        <a class="navbar-toggler hidden-md-up pull-xs-right" data-toggle="collapse" href="#collapsingNavbar" aria-expanded="false" aria-controls="collapsingNavbar">
+        &#9776;
+      </a>
+        <div id="collapsingNavbar" class="collapse navbar-toggleable-custom" role="tabpanel" aria-labelledby="collapsingNavbar">
+          <ul class="nav navbar-nav pull-xs-right">
+            <li class="nav-item nav-item-toggable">
+              <a class="nav-link" href="./index.html">Início<span class="sr-only">Inicio</span></a>
+            </li>
+            <li class="nav-item nav-item-toggable">
+              <a class="nav-link" href="./about.html">Sobre</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <hr class="invisible">
+
+    <!-- Text Content
+    ================================================== -->
+    <section class="section-text">
+      <div class="container">
+        <h3 class="text-xs-center">O Problema do Caixeiro Viajante</h3>
+		<h4 class="text-xs-center">Objetivos</h4>
+        <p class="wp wp-8">O programa criado deve ler um grafo Hamiltoniano ponderado a partir de um arquivo qualquer e através de um algoritmo visto em sala (2-otimal ou Twice-Around) obter 10 soluções diferentes para o problema do caixeiro-viajante.</p>
+
+
+		<br>
+		<h4 class="text-xs-center">METODOLOGIA</h4>
+		<p class="wp wp-8">Para obter soluções distintas para o problema há algumas heurísticas comumente adotadas na prática: utilizar diferentes inicializações, ou seja, soluções iniciais. Elas podem ser geradas simplesmente aleatoriamente (selecionando vértices quaisquer) ou utilizando alguma heurística, como por exemplo, a escolha do vizinho mais próximo por exemplo. Dessa forma, escolhe-se aleatoriamente apenas o primeiro vértice do ciclo (v0) e depois sempre é escolhido como próximo elemento da sequência o vizinho mais próximo do vértice atual, até que o ciclo Hamiltoniano seja formado (não sobre mais vértices).</p>
+		<p class="wp wp-8">Para resolver o problema do Caixeiro Viajante usaremos o algoritmo Twice-Around, que consiste na aplicação do algoritmo de Prim no grafo, duplicando o menor caminho encontrado, após isso aplicar o algoritmo de Fleury, que será utilizada uma função presente na biblioteca NetworkX, e removendo-se as repetições.</p>
+		<h5>Algoritmo base Twice-Around:</h5>
+
+
+<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0; line-height: 125%"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></td><td><pre style="margin: 0; line-height: 125%">Ler grafo G <span style="color: #333333">=</span> (V, E, w)
+H <span style="color: #FF0000; background-color: #FFAAAA">←</span> <span style="color: #FF0000; background-color: #FFAAAA">∅</span>
+Passo1<span style="color: #333333">.</span> T <span style="color: #FF0000; background-color: #FFAAAA">←</span> MST(G) (Kruskal ou Prim)
+             Para cada e<span style="color: #FF0000; background-color: #FFAAAA">∈</span>T
+                     T <span style="color: #FF0000; background-color: #FFAAAA">←</span> T <span style="color: #333333">+</span> e (Duplique aresta e)
+Passo <span style="color: #6600EE; font-weight: bold">2.</span> Encontre um circuito Euleriano L em T (Fleury)
+Passo <span style="color: #6600EE; font-weight: bold">3.</span> Enquanto L<span style="color: #FF0000; background-color: #FFAAAA">≠∅</span> {
+                     Escolha sequencialmente lk<span style="color: #FF0000; background-color: #FFAAAA">∈</span>L
+                     Se lk<span style="color: #FF0000; background-color: #FFAAAA">∉</span>H então
+                          H <span style="color: #FF0000; background-color: #FFAAAA">←</span> H U {lk}
+                      L <span style="color: #FF0000; background-color: #FFAAAA">←</span> L <span style="color: #FF0000; background-color: #FFAAAA">–</span> {lk}
+</pre></td></tr></table></div>
+
+<br>
+
+		<h5>Algoritmo criado:</h5>
+
+
+<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0; line-height: 125%"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94</pre></td><td><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">networkx</span> <span style="color: #008800; font-weight: bold">as</span> <span style="color: #0e84b5; font-weight: bold">nx</span>  <span style="color: #888888"># Para a parte de criar e gerenciar grafos</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">numpy</span> <span style="color: #008800; font-weight: bold">as</span> <span style="color: #0e84b5; font-weight: bold">np</span>
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">random</span> <span style="color: #008800; font-weight: bold">import</span> randint
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">matplotlib.pyplot</span> <span style="color: #008800; font-weight: bold">as</span> <span style="color: #0e84b5; font-weight: bold">plt</span>  <span style="color: #888888"># Para exibir na tela</span>
+
+
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">Desenha</span>(G,pos,lineColor,filename):
+    nx<span style="color: #333333">.</span>draw_networkx_nodes(G, pos, node_color<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;b&#39;</span>, node_size<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">150</span>)
+    nx<span style="color: #333333">.</span>draw_networkx_edges(G, pos, edgelist<span style="color: #333333">=</span>G<span style="color: #333333">.</span>edges(), edge_color<span style="color: #333333">=</span>lineColor, arrows<span style="color: #333333">=</span><span style="color: #008800; font-weight: bold">True</span>)
+
+    nx<span style="color: #333333">.</span>draw_networkx_labels(G, pos, font_size<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">8</span>)
+
+    labels <span style="color: #333333">=</span> nx<span style="color: #333333">.</span>get_edge_attributes(G, <span style="background-color: #fff0f0">&#39;weight&#39;</span>)
+    nx<span style="color: #333333">.</span>draw_networkx_edge_labels(G, pos, edge_labels<span style="color: #333333">=</span>labels, font_size<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">8</span>)
+
+    plt<span style="color: #333333">.</span>savefig(filename<span style="color: #333333">+</span><span style="background-color: #fff0f0">&#39;.png&#39;</span>,dpi<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">250</span>)
+    plt<span style="color: #333333">.</span>clf()
+
+
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">MST_Prim</span>(G,r):
+    Q <span style="color: #333333">=</span> []  <span style="color: #888888"># Fila de prioridades</span>
+
+    <span style="color: #008800; font-weight: bold">for</span> v <span style="color: #000000; font-weight: bold">in</span> G<span style="color: #333333">.</span>nodes():
+        <span style="color: #008800; font-weight: bold">if</span> v <span style="color: #000000; font-weight: bold">is</span> r:
+            G<span style="color: #333333">.</span>node[v][<span style="background-color: #fff0f0">&#39;lambda&#39;</span>] <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+        <span style="color: #008800; font-weight: bold">else</span>:
+            G<span style="color: #333333">.</span>node[v][<span style="background-color: #fff0f0">&#39;lambda&#39;</span>] <span style="color: #333333">=</span> np<span style="color: #333333">.</span>Infinity
+
+        G<span style="color: #333333">.</span>node[v][<span style="background-color: #fff0f0">&#39;predecessor&#39;</span>] <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">None</span>
+        Q<span style="color: #333333">.</span>append([v, G<span style="color: #333333">.</span>node[v][<span style="background-color: #fff0f0">&#39;lambda&#39;</span>]])
+
+    S <span style="color: #333333">=</span> []  <span style="color: #888888"># Ja finalizados</span>
+    <span style="color: #008800; font-weight: bold">while</span>(Q):
+        Q<span style="color: #333333">.</span>sort(key<span style="color: #333333">=</span><span style="color: #008800; font-weight: bold">lambda</span> item: item[<span style="color: #0000DD; font-weight: bold">1</span>])
+        u <span style="color: #333333">=</span> Q<span style="color: #333333">.</span>pop(<span style="color: #0000DD; font-weight: bold">0</span>)
+        S<span style="color: #333333">.</span>append(u[<span style="color: #0000DD; font-weight: bold">0</span>])
+        <span style="color: #008800; font-weight: bold">for</span> v <span style="color: #000000; font-weight: bold">in</span> G<span style="color: #333333">.</span>neighbors(u[<span style="color: #0000DD; font-weight: bold">0</span>]):
+            <span style="color: #008800; font-weight: bold">if</span> (v <span style="color: #000000; font-weight: bold">not</span> <span style="color: #000000; font-weight: bold">in</span> S):
+                <span style="color: #008800; font-weight: bold">if</span> (G<span style="color: #333333">.</span>node[v][<span style="background-color: #fff0f0">&#39;lambda&#39;</span>] <span style="color: #333333">&gt;=</span> G<span style="color: #333333">.</span>edge[u[<span style="color: #0000DD; font-weight: bold">0</span>]][v][<span style="background-color: #fff0f0">&#39;weight&#39;</span>]):
+                    Q<span style="color: #333333">.</span>remove([v, G<span style="color: #333333">.</span>node[v][<span style="background-color: #fff0f0">&#39;lambda&#39;</span>]])
+                    G<span style="color: #333333">.</span>node[v][<span style="background-color: #fff0f0">&#39;lambda&#39;</span>] <span style="color: #333333">=</span> G<span style="color: #333333">.</span>edge[u[<span style="color: #0000DD; font-weight: bold">0</span>]][v][<span style="background-color: #fff0f0">&#39;weight&#39;</span>]
+                    G<span style="color: #333333">.</span>node[v][<span style="background-color: #fff0f0">&#39;predecessor&#39;</span>] <span style="color: #333333">=</span> u[<span style="color: #0000DD; font-weight: bold">0</span>]
+                    Q<span style="color: #333333">.</span>append([v, G<span style="color: #333333">.</span>node[v][<span style="background-color: #fff0f0">&#39;lambda&#39;</span>]])
+    MST <span style="color: #333333">=</span> nx<span style="color: #333333">.</span>Graph()
+    MST<span style="color: #333333">.</span>add_nodes_from(G<span style="color: #333333">.</span>nodes())
+    <span style="color: #008800; font-weight: bold">for</span> v <span style="color: #000000; font-weight: bold">in</span> S:
+        <span style="color: #008800; font-weight: bold">if</span> G<span style="color: #333333">.</span>node[v][<span style="background-color: #fff0f0">&#39;predecessor&#39;</span>] <span style="color: #333333">!=</span> <span style="color: #008800; font-weight: bold">None</span>:
+            u <span style="color: #333333">=</span> G<span style="color: #333333">.</span>node[v][<span style="background-color: #fff0f0">&#39;predecessor&#39;</span>]
+            MST<span style="color: #333333">.</span>add_edge(v, u, weight<span style="color: #333333">=</span>G<span style="color: #333333">.</span>edge[v][u][<span style="background-color: #fff0f0">&#39;weight&#39;</span>])
+
+    <span style="color: #008800; font-weight: bold">return</span> MST
+
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">TSP_TwiceAround</span>(G):
+    H <span style="color: #333333">=</span> [] <span style="color: #888888"># Conjunto solução inicia vazio (será preenchido com o ciclo hamiltoniano)</span>
+
+    raiz <span style="color: #333333">=</span> randint(<span style="color: #0000DD; font-weight: bold">0</span>,G<span style="color: #333333">.</span>number_of_nodes()<span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">1</span>) <span style="color: #888888"># Para calcular a MST no passo seguinte, escolhemos uma raiz aleatória</span>
+    T <span style="color: #333333">=</span> MST_Prim(G, raiz) <span style="color: #888888"># MST do grafo</span>
+
+    D <span style="color: #333333">=</span> nx<span style="color: #333333">.</span>MultiGraph()  <span style="color: #888888"># Para que seja possível duplicar as arestas, devido as arestas paralelas, é necessário utilizar um multigrafo</span>
+    D<span style="color: #333333">.</span>add_weighted_edges_from(T<span style="color: #333333">.</span>edges(data<span style="color: #333333">=</span><span style="color: #008800; font-weight: bold">True</span>))  <span style="color: #888888"># Duplicamos as arestas adicionando-as duas vezes no mesmo grafo</span>
+    D<span style="color: #333333">.</span>add_weighted_edges_from(T<span style="color: #333333">.</span>edges(data<span style="color: #333333">=</span><span style="color: #008800; font-weight: bold">True</span>))
+
+    L <span style="color: #333333">=</span> <span style="color: #007020">list</span>(nx<span style="color: #333333">.</span>eulerian_circuit(D,source<span style="color: #333333">=</span>raiz)) <span style="color: #888888"># Lista com as arestas que formam um Tour de Euler</span>
+
+    <span style="color: #888888"># Com o Tour de Euler em seu formato apropriado, iniciamos o processo de eliminação de repetição de vértices</span>
+    peso <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+    H<span style="color: #333333">.</span>append(L[<span style="color: #0000DD; font-weight: bold">0</span>][<span style="color: #0000DD; font-weight: bold">0</span>])
+
+    <span style="color: #008800; font-weight: bold">for</span> u,v <span style="color: #000000; font-weight: bold">in</span> L:
+        <span style="color: #008800; font-weight: bold">if</span> v <span style="color: #000000; font-weight: bold">not</span> <span style="color: #000000; font-weight: bold">in</span> H:
+            H<span style="color: #333333">.</span>append(v)
+            u <span style="color: #333333">=</span> D<span style="color: #333333">.</span>get_edge_data(u,v)
+            peso <span style="color: #333333">=</span> peso <span style="color: #333333">+</span> u[<span style="color: #0000DD; font-weight: bold">0</span>][<span style="background-color: #fff0f0">&#39;weight&#39;</span>][<span style="background-color: #fff0f0">&#39;weight&#39;</span>]
+
+    <span style="color: #888888"># Adiciona o vértice origem no final do caminho para completar o ciclo</span>
+    H<span style="color: #333333">.</span>append(H[<span style="color: #0000DD; font-weight: bold">0</span>])
+
+    <span style="color: #008800; font-weight: bold">return</span> L,H,peso
+
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">main</span>():
+
+    A <span style="color: #333333">=</span> np<span style="color: #333333">.</span>loadtxt(<span style="background-color: #fff0f0">&#39;matriz.txt&#39;</span>)
+    G <span style="color: #333333">=</span> nx<span style="color: #333333">.</span>from_numpy_matrix(A)
+    <span style="color: #008800; font-weight: bold">with</span> <span style="color: #007020">open</span>(<span style="background-color: #fff0f0">&quot;resultado.txt&quot;</span>, <span style="background-color: #fff0f0">&#39;w&#39;</span>) <span style="color: #008800; font-weight: bold">as</span> arquivo:
+        <span style="color: #008800; font-weight: bold">for</span> i <span style="color: #000000; font-weight: bold">in</span> <span style="color: #007020">range</span>(<span style="color: #0000DD; font-weight: bold">10</span>):
+            arquivo<span style="color: #333333">.</span>write(<span style="background-color: #fff0f0">&quot;Iteracao &quot;</span><span style="color: #333333">+</span><span style="color: #007020">str</span>(i<span style="color: #333333">+</span><span style="color: #0000DD; font-weight: bold">1</span>))
+            cicloHamiltoniano <span style="color: #333333">=</span> TSP_TwiceAround(G)
+            arquivo<span style="color: #333333">.</span>write(<span style="background-color: #fff0f0">&quot;</span><span style="color: #666666; font-weight: bold; background-color: #fff0f0">\n</span><span style="background-color: #fff0f0">Tour de Euler extraido: &quot;</span> <span style="color: #333333">+</span> <span style="color: #007020">str</span>(cicloHamiltoniano[<span style="color: #0000DD; font-weight: bold">0</span>]))
+            arquivo<span style="color: #333333">.</span>write(<span style="background-color: #fff0f0">&quot;</span><span style="color: #666666; font-weight: bold; background-color: #fff0f0">\n</span><span style="background-color: #fff0f0">Ciclo Hamiltoniano Final: &quot;</span><span style="color: #333333">+</span><span style="color: #007020">str</span>(cicloHamiltoniano[<span style="color: #0000DD; font-weight: bold">1</span>]))
+            arquivo<span style="color: #333333">.</span>write(<span style="background-color: #fff0f0">&quot;</span><span style="color: #666666; font-weight: bold; background-color: #fff0f0">\n</span><span style="background-color: #fff0f0">Peso: &quot;</span> <span style="color: #333333">+</span> <span style="color: #007020">str</span>(cicloHamiltoniano[<span style="color: #0000DD; font-weight: bold">2</span>]))
+            arquivo<span style="color: #333333">.</span>write(<span style="background-color: #fff0f0">&quot;</span><span style="color: #666666; font-weight: bold; background-color: #fff0f0">\n</span><span style="background-color: #fff0f0">___________________________________________________________</span><span style="color: #666666; font-weight: bold; background-color: #fff0f0">\n</span><span style="background-color: #fff0f0">&quot;</span>)
+
+<span style="color: #008800; font-weight: bold">if</span> __name__<span style="color: #333333">==</span><span style="background-color: #fff0f0">&#39;__main__&#39;</span>:
+    main()
+</pre></td></tr></table></div>
+<br><br>
+
+		<h4 class="text-xs-center">QUESTIONAMENTOS</h4>
+		<p class="wp wp-8">Liste as 3 melhores soluções e as 3 piores obtidas. Qual a diferença de custo entre a melhor e a pior? Discuta como a diferença pode ser significativa.</p>
+		<p class="wp wp-8">Considere o grafo a seguir de 30 vértices (HA30).</p>
+
+		<img src="img/caixeiro/1.png" class="img-responsive center-block img-fluid">
+		<br>
+
+      </div>
+    </section>
+
+    <!-- Footer
+    ================================================== -->
+    <footer class="section-footer bg-inverse" role="contentinfo">
+      <!-- <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-lg-5">
+            <div class="media">
+              <div class="media-left">
+                <span class="media-object icon-logo display-1"></span>
+              </div>
+              <small class="media-body media-bottom">
+                &copy; Land.io 2015. <br>
+                Designed by Peter Finlan, developed by Taty Grassini, exclusively for Codrops.
+              </small>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-7">
+            <ul class="nav nav-inline">
+              <li class="nav-item">
+                <a class="nav-link" href="./index-carousel.html"><small>NEW</small> Slides<span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item"><a class="nav-link" href="ui-elements.html">UI Kit</a></li>
+              <li class="nav-item"><a class="nav-link" href="https://github.com/tatygrassini/landio-html" target="_blank">GitHub</a></li>
+              <li class="nav-item"><a class="nav-link scroll-top" href="#totop">Back to top <span class="icon-caret-up"></span></a></li>
+            </ul>
+          </div>
+        </div>
+      </div> -->
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="js/landio.min.js"></script>
+  </body>
+</html>
