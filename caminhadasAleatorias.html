@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Teoria dos Grafos</title>
+    <title>Caminhadas Aleatórias</title>
 
     <meta name="msapplication-TileColor" content="#05162a">
     <meta name="theme-color" content="#05162a">
@@ -39,14 +39,73 @@
     ================================================== -->
     <section class="section-text">
       <div class="container">
-        <h3 class="text-xs-center">Título do Trabalho</h3>
+        <h3 class="text-xs-center">Snakes and Ladders using Power Method</h3>
         <div class="row p-y-3">
-          <div class="col-md-5">
-            <p class="wp wp-7">A posuere donec senectus suspendisse bibendum magna ridiculus a justo orci parturient suspendisse ad rhoncus cursus ut parturient viverra elit aliquam ultrices est sem. Tellus nam ad fermentum ac enim est duis facilisis congue a lacus adipiscing consequat risus consectetur scelerisque integer suspendisse a mus integer elit massa ut.</p>
-          </div>
-          <div class="col-md-5 col-md-offset-2 separator-x">
-            <p class="wp wp-8">A posuere donec senectus suspendisse bibendum magna ridiculus a justo orci parturient suspendisse ad rhoncus cursus ut parturient viverra elit aliquam ultrices est sem. Tellus nam ad fermentum ac enim est duis facilisis congue a lacus adipiscing consequat risus consectetur scelerisque integer suspendisse a mus integer elit massa ut.</p>
-          </div>
+            <p class="wp wp-7">Snakes and Ladders é um famoso jogo de tabuleiro em que a cada rodada um jogador joga uma moeda não viciada e avança 1 casa se obtiver cara ou avança 2 casas se obtiver coroa. Se o jogador para no pé da escada, então ele imediatamente sobe para o topo da escada. Se o jogador cai na boca de uma cobra então ele imediatamente escorrega para o rabo. O jogador sempre inicia no quadrado de número 1. O jogo termina quando ele atinge o quadrado de número 36.</p>
+	    <p class="wp wp-7">Utilizando o Power Method calcula-se a distribuição estacionária da cadeia de Markov homogênea em questão. Uma cadeia de Markov é um processo aleatório em que a probabilidade de se visitar um estado s num tempo t depende apenas do estado s’ visitado no tempo t – 1.</p>
+	    <p class="wp wp-7">Desejamos calcular como a distribuição de probabilidades w(0) evolui ao longo do tempo para que possamos saber qual é a probabilidade de estar em cada um dos estados num tempo k.</p>
+	    <p class="text-xs-center"><strong>w(k)=[ p (Xk=s0), p( Xk=s1), p( Xk=s2), p( Xk=s3),... , p(Xk=sn)]</strong></p>
+	    <p class="wp wp-7">O i-ésimo elemento de ⃗w(k) denota a probabilidade de no tempo k estarmos no estado si</p>
+	    <p class="wp wp-7">odemos verificar que a regra para atualização do vetor w é dada por</p>
+	    <p class="text-xs-center"><strong>w(k)=w(k−1)P</strong></p>
+	    <p class="wp wp-7">Após a implementação de um script que calcule a distribuição estacionária da cadeia de Markov homogênea em questão, deve-se responder:</p>
+	    <p class="wp wp-7">Qual é a probabilidade de um jogador vencer o jogo, ou seja, qual a probabilidade de se atingir o estado 36 no longo prazo? Considere k = 100 um número suficiente de iterações no Power Method. Quais os estados mais prováveis de serem acessados?</p>
+	    <p class="wp wp-7">Especifique o diagrama de estados da cadeia de Markov que representa o jogo, computando para isso a matriz de transição de estados P.</p>
+	    <h5>Pseudocódigo base do Power Method:</h5>
+	    <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0; line-height: 125%"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22</pre></td><td><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">for</span> <span style="color: #0066BB; font-weight: bold">each</span>(<span style="background-color: #fff0f0">&quot;simulation&quot;</span>) {
+    <span style="color: #888888">// calculate the matrix-by-vector product Ab</span>
+    <span style="color: #008800; font-weight: bold">for</span>(i <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>; i <span style="color: #333333">&lt;</span> n; i<span style="color: #333333">++</span>) {
+         tmp[i] <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>;          
+         <span style="color: #008800; font-weight: bold">for</span> (j <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>; j <span style="color: #333333">&lt;</span> n; j<span style="color: #333333">++</span>) {
+              <span style="color: #888888">// dot product of i-th row in A with the column vector b</span>
+              tmp[i] <span style="color: #333333">+=</span> A[i][j] <span style="color: #333333">*</span> b[j]; 
+         }
+    }
+
+    <span style="color: #888888">// calculate the length of the resulting vector:</span>
+    <span style="color: #888888">// if v = (v1 v2 ... vn), then ||v|| = square_root(v1*v1 + v2*v2 + ... + vn*vn)</span>
+    norm_sq <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>;
+    <span style="color: #008800; font-weight: bold">for</span> (k <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>; k <span style="color: #333333">&lt;</span> n; k<span style="color: #333333">++</span>) {
+         norm_sq <span style="color: #333333">+=</span> tmp[k] <span style="color: #333333">*</span> tmp[k]; 
+    }
+
+    norm <span style="color: #333333">=</span> square_root(norm_sq);
+
+    <span style="color: #888888">// normalize b to unit vector for next iteration</span>
+    b <span style="color: #333333">=</span> tmp <span style="color: #333333">/</span> norm;
+}
+</pre></td></tr></table></div>
+<br>
+
+	    <p class="wp wp-7">Script criado para cálculo da distribuição estacionária na cadeia de Markov:</p>
+	    <h1>COLOCAR O SCRIPT</h1>
+	    <p class="wp wp-7"></p>
+	    <p class="wp wp-7"></p>
+	    <p class="wp wp-7"></p>
+	    <p class="wp wp-7"></p>
+
+          
         </div>
       </div>
     </section>
