@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Curiosidade</title>
+
+    <meta name="msapplication-TileColor" content="#05162a">
+    <meta name="theme-color" content="#05162a">
+    <link rel="stylesheet" href="css/landio.css">
+  </head>
+
+  <body>
+
+    <!-- Navigation
+    ================================================== -->
+    <nav class="navbar-fixed-top navbar-dark bg-inverse">
+      <div class="container">
+        <a class="navbar-toggler hidden-md-up pull-xs-right" data-toggle="collapse" href="#collapsingNavbar" aria-expanded="false" aria-controls="collapsingNavbar">
+        &#9776;
+      </a>
+        <div id="collapsingNavbar" class="collapse navbar-toggleable-custom" role="tabpanel" aria-labelledby="collapsingNavbar">
+          <ul class="nav navbar-nav pull-xs-right">
+            <li class="nav-item nav-item-toggable">
+              <a class="nav-link" href="./index.html">Início<span class="sr-only">Inicio</span></a>
+            </li>
+            <li class="nav-item nav-item-toggable">
+              <a class="nav-link" href="./about.html">Sobre</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <hr class="invisible">
+
+    <!-- Text Content
+    ================================================== -->
+    <section class="section-text">
+      <div class="container">
+        <h3 class="text-xs-center">Entendendo Pathfingding Utilizando o Algoritmo A*</h3>
+        <div class="row p-y-3">
+            <p class="wp wp-7">Em 1968, o pesquisador Nils Nilsson estava tentando melhorar o planejamento do caminho feito por Shakey the Robot, um robô protótipo que poderia navegar por uma sala contendo obstáculos. Este algoritmo de localização, que Nilsson chamou A1, era uma versão mais rápida do método então mais conhecido, o algoritmo de Dijkstra, para encontrar caminhos mais curtos nos grafos.</p>
+	  <p class="wp wp-7">A * é um algoritmo de busca informada, ou best-first search, o que significa que ele resolve problemas procurando entre todos os caminhos possíveis para a solução (objetivo) para aquele que incorre o menor custo (menor distância percorrida, menor tempo ), E entre esses caminhos considera primeiro os que parecem conduzir mais rapidamente à solução. Ele é formulado em termos de gráficos ponderados: a partir de um nó específico de um gráfico, ele constrói uma árvore de caminhos a partir desse nó, expandindo caminhos um passo de cada vez, até que um de seus caminhos termina no nó objetivo predeterminado.</p>
+	  <p class="wp wp-7">Em cada iteração de seu loop principal, A * precisa determinar qual de seus caminhos parciais para se expandir em um ou mais caminhos mais longos. Ele faz isso com base em uma estimativa do custo (peso total) ainda para ir para o nó objetivo. Especificamente, A * seleciona o caminho que minimiza f(n) = g(n) + h(n).</p>
+	  <p class="wp wp-7">Onde n é o último nó no caminho, g (n) é o custo do caminho do nó de partida para n, e h (n) é uma heurística que estima o custo do caminho mais barato de n para a meta. A heurística é específica do problema. Para que o algoritmo encontre o caminho mais curto, a função heurística deve ser admissível, o que significa que nunca superestimará o custo real para chegar ao nó de meta mais próximo.</p>
+	  <h5 class="text-xs-center">Segue o pseudocódigo do algoritmo A*:</h5>
+	  <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0; line-height: 125%"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51</pre></td><td><pre style="margin: 0; line-height: 125%">function A<span style="color: #333333">*</span>(start, goal)
+    <span style="color: #888888">// The set of nodes already evaluated.</span>
+    closedSet <span style="color: #333333">:=</span> {}
+    <span style="color: #888888">// The set of currently discovered nodes that are not evaluated yet.</span>
+    <span style="color: #888888">// Initially, only the start node is known.</span>
+    openSet <span style="color: #333333">:=</span> {start}
+    <span style="color: #888888">// For each node, which node it can most efficiently be reached from.</span>
+    <span style="color: #888888">// If a node can be reached from many nodes, cameFrom will eventually contain the</span>
+    <span style="color: #888888">// most efficient previous step.</span>
+    cameFrom <span style="color: #333333">:=</span> the empty map
+
+    <span style="color: #888888">// For each node, the cost of getting from the start node to that node.</span>
+    gScore <span style="color: #333333">:=</span> map with <span style="color: #008800; font-weight: bold">default</span> value of Infinity
+    <span style="color: #888888">// The cost of going from start to start is zero.</span>
+    gScore[start] <span style="color: #333333">:=</span> <span style="color: #0000DD; font-weight: bold">0</span> 
+    <span style="color: #888888">// For each node, the total cost of getting from the start node to the goal</span>
+    <span style="color: #888888">// by passing by that node. That value is partly known, partly heuristic.</span>
+    fScore <span style="color: #333333">:=</span> map with <span style="color: #008800; font-weight: bold">default</span> value of Infinity
+    <span style="color: #888888">// For the first node, that value is completely heuristic.</span>
+    fScore[start] <span style="color: #333333">:=</span> heuristic_cost_estimate(start, goal)
+
+    <span style="color: #008800; font-weight: bold">while</span> openSet is not empty
+        current <span style="color: #333333">:=</span> the node in openSet having the lowest fScore[] value
+        <span style="color: #008800; font-weight: bold">if</span> current <span style="color: #333333">=</span> goal
+            <span style="color: #008800; font-weight: bold">return</span> reconstruct_path(cameFrom, current)
+
+        openSet.Remove(current)
+        closedSet.Add(current)
+        <span style="color: #008800; font-weight: bold">for</span> each neighbor of current
+            <span style="color: #008800; font-weight: bold">if</span> neighbor in closedSet
+                <span style="color: #008800; font-weight: bold">continue</span>		<span style="color: #888888">// Ignore the neighbor which is already evaluated.</span>
+            <span style="color: #888888">// The distance from start to a neighbor</span>
+            tentative_gScore <span style="color: #333333">:=</span> gScore[current] <span style="color: #333333">+</span> dist_between(current, neighbor)
+            <span style="color: #008800; font-weight: bold">if</span> neighbor not in openSet	<span style="color: #888888">// Discover a new node</span>
+                openSet.Add(neighbor)
+            <span style="color: #008800; font-weight: bold">else</span> <span style="color: #008800; font-weight: bold">if</span> tentative_gScore <span style="color: #333333">&gt;=</span> gScore[neighbor]
+                <span style="color: #008800; font-weight: bold">continue</span>		<span style="color: #888888">// This is not a better path.</span>
+
+            <span style="color: #888888">// This path is the best until now. Record it!</span>
+            cameFrom[neighbor] <span style="color: #333333">:=</span> current
+            gScore[neighbor] <span style="color: #333333">:=</span> tentative_gScore
+            fScore[neighbor] <span style="color: #333333">:=</span> gScore[neighbor] <span style="color: #333333">+</span> heuristic_cost_estimate(neighbor, goal)
+
+    <span style="color: #008800; font-weight: bold">return</span> failure
+
+function reconstruct_path(cameFrom, current)
+    total_path <span style="color: #333333">:=</span> [current]
+    <span style="color: #008800; font-weight: bold">while</span> current in cameFrom.Keys<span style="color: #333333">:</span>
+        current <span style="color: #333333">:=</span> cameFrom[current]
+        total_path.append(current)
+    <span style="color: #008800; font-weight: bold">return</span> total_path
+</pre></td></tr></table></div>
+        </div>
+
+	<h4 class="text-xs-center">A Área de Procura</h4>
+	<p class="wp wp-7">Assumindo que nós temos alguém que quer ir do ponto A ao ponto B e que uma parede separa os dois pontos, onde o ponto de partida A é verde, o ponto B de destino é vermelho, e os quadrados pintados azuis são a parede entre eles.</p>
+        
+	<img src="img/Curiosidade/1.png" class="img-responsive center-block">
+	<br>
+	<p class="wp wp-7">Simplificando a área de procura numa área quadrada é o primeiro passo em pathfinding. Este método particular reduz nossa área de procura a uma ordem simples bi-dimensional. Cada item na ordem representa um dos quadrados na grade e seu estado é registrado como passável ou não passável. O caminho é achado encontrando quais quadrados nós deveríamos tomar para ir de A até B. Uma vez que o caminho é achado, nossa entidade move do centro de um quadrado ao centro do próximo e assim sucessivamente até que o objetivo é alcançado.</p>
+	<p class="wp wp-7">Nos quadrados existem pontos presentes no seu centro, eles são chamados de nós. Os nós poderiam ser colocados em qualquer lugar dentro das formas, no centro ou ao longo das extremidades, ou em qualquer outro lugar. Porém, esse este sistema é adotado porque é o mais simples.</p>
+	<p class="wp wp-7">Uma vez que nós simplificamos nossa área de procura em um número manejável de nós, o próximo passo é administrar uma procura para achar o caminho mais curto. Isto é feito começando do ponto A, conferindo os quadrados adjacentes, e geralmente, procurando para fora até seja encontrado o destino. </p>
+	<p class="wp wp-7">Começa-se a procura fazendo o seguinte:</p>
+	<ol>
+	<li>Comece no ponto de partida A e acrescente-o a uma "lista aberta" de quadrados a serem considerados.  A lista contém quadrados que poderiam cair ao longo do caminho que você quer tomar, mas, talvez não. Basicamente, esta é uma lista de quadrados que precisam ser verificados.</li>
+	<li>Olhe em todos os quadrados alcançáveis, que podem ser passados por e sejam adjacentes ao ponto de partida, ignorando quadrados com paredes, água, ou outro terreno ilegal. Acrescente-os à lista aberta. Para cada um destes quadrados, salve o ponto A como seu quadrado pai. Este ponto do quadrado pai é muito importante quando nós quisermos localizar nosso caminho. Será explicado mais a fundo posteriormente.</li>
+	<li>3.Remova o quadrado A de sua lista aberta, e o acrescente a uma lista fechada de quadrados que você não precisa procurar novamente.</li>
+	</ol>
+	<br>
+	<p class="wp wp-7">Na figura a seguir, o quadrado verde escuro no centro é seu quadrado pai. É esboçado em azul para indicar que o quadrado foi acrescentado à lista fechada. Todos os quadrados adjacentes estão agora na lista aberta de quadrados a serem conferidos, e eles são esboçados em verde. Cada um dos quadrados tem um ponteiro cinza que aponta para trás, a seu anterior, que é o quadrado pai.</p>
+
+	<img src="img/Curiosidade/2.png" class="img-responsive center-block">
+	<br>
+	<p class="wp wp-7">A chave para determinar quais quadrados usar quando estiver procurando o caminho é a seguinte equação: f(n) = g(n) + h(n), já descrita acima.</p>
+	<p class="wp wp-7">O caminho é gerado passando repetidamente por nossa lista aberta e escolhendo o quadrado com a mais baixa contagem de F. </p>
+	<p class="wp wp-7">Como descrito acima, G é o custo do movimento para mover do ponto de partida para o quadrado determinado usando o caminho gerado para chegar lá. Neste exemplo, será determinado um custo de 10 a cada quadrado horizontal ou vertical movido, e um custo de 14 para um movimento diagonal. Estes números serão usados porque a distância real para mover diagonalmente é a raiz quadrada de 2, ou aproximadamente 1.414 vezes o custo de mover horizontalmente ou verticalmente. Então se usa 10 e 14 por causa da simplicidade. A relação é quase correta e se evita ter que calcular raízes quadradas e decimais. Isto porque usando números inteiros, como estes, a execução do algoritmo torna-se muito mais rápida para o computador. Já que o  pathfinding pode ser muito lento se não forem usados atalhos como estes.</p>
+	<p class="wp wp-7">Uma vez que o custo de G está sendo calculado ao longo de um caminho específico para um determinado quadrado, o modo para entender o custo de G daquele quadrado é tomar o custo de G de seu pai e então somar 10 ou 14 dependendo se é diagonal ou ortogonal (não-diagonal) daquele quadrado pai. </p>
+	<p class="wp wp-7">H pode ser calculado de uma variedade de maneiras. O método utilizado é chamado o método de Manhattan onde você calcula o número total de quadrados movidos horizontalmente e verticalmente para alcançar o quadrado alvo a partir do quadrado atual, ignorando movimento diagonal, e ignorando qualquer obstáculo que pode estar no caminho.</p>
+	<p class="wp wp-7">F é calculado somando G e H. Os resultados do primeiro passo em nossa procura podem ser vistos na ilustração abaixo. São escritos para o F, G, e contagens de H em cada quadrado. Como é indicado no quadrado imediatamente a direita quadrado inicial, F é impresso em cima na parte esquerda, G é impresso em baixo a esquerda, e H é impresso em baixo a direita.</p>
+	<img src="img/Curiosidade/3.png" class="img-responsive center-block">
+	<br>
+	<p class="wp wp-7">Para continuar a procura, nós escolhemos simplesmente o quadrado que contém o mais baixo F de todos esses que estão na lista aberta. Nós fazemos então o seguinte com o quadrado selecionado:</p>
+	<ol>
+	<li>Retire-o da lista aberta e o acrescente à lista fechada.</li>
+	<li>Confira tudo dos quadrados adjacentes. Ignorando os que estão na lista fechada ou não passável, acrescente quadrados à lista aberta, se eles já não estiverem na lista aberta. Faça o quadrado selecionado o pai dos quadrados novos.</li>
+	<li>Se um quadrado adjacente já estiver na lista aberta, confira para ver se este caminho para aquele quadrado for melhor. Em outras palavras, confira para ver se o G para aquele quadrado é mais baixo e se foi usado o quadrado atual para chegar lá. Se não for, não faça nada.</li>
+	<li>Por outro lado, se o custo G do novo caminho é menor, troque o pai do quadrado adjacente para o quadrado selecionado (no diagrama acima, mude a direção do ponteiro para apontar para o quadrado selecionado). Finalmente, recalcule o F e G daquele quadrado. </li>
+	</ol>	
+	<p class="wp wp-7">Dos 9 quadrados iniciais, tem-se  8 quadrados na lista aberta depois que o quadrado inicial foi posto na lista fechada. Destes quadrados, o quadrado com o mais baixo custo de F é o quadrado imediatamente a direita do quadrado inicial, com uma contagem F = 40. Assim, este quadrado é selecionado como nosso próximo quadrado. Está destacado em azul na ilustração seguinte.</p>
+	<img src="img/Curiosidade/4.png" class="img-responsive center-block">
+	<br>
+	<p class="wp wp-7">Primeiro, remove-se da lista aberta e acrescenta-se nossa lista fechada o nó selecionado para compor o caminho. Então, confere-se os quadrados adjacentes, os quadrados imediatamente a direita deste quadrado são paredes, assim podem ser ignorados. O quadrado imediatamente a esquerda é o quadrado inicial e está na lista fechada, então também é ignorado.</p>
+	<p class="wp wp-7">Os outros quatro quadrados já estão na lista aberta, precisa-se conferir se os caminhos para esses quadrados são melhores usando este quadrado para chegar lá, utilizando as contagens de G como nosso ponto de referência. </p>
+	<p class="wp wp-7">Quando se repete este processo para todos os 4 quadrados adjacentes da lista aberta, é possível que nenhum dos caminhos são melhores passando pelo quadrado atual, assim nada é alterado. Então, uma vez que não há mais quadrados adjacentes, passa-se para o próximo.</p>
+	<p class="wp wp-7">Assim segue-se pela lista de quadrados na lista aberta que está agora com 7 quadrados e escolhe-se um com o mais baixo custo de F. De forma interessante, neste caso, há dois quadrados com uma contagem de 54. Realmente não importa qual dos dois será escolhido. Com a finalidade de velocidade, pode ser mais rápido escolher o último que foi acrescentado à lista aberta. Isto influencia a procura a favor de quadrados que são achados mais tarde na procura, quando se chega mais perto do objetivo.</p>
+	<p class="wp wp-7">Foi escolhido o quadrado à direita do quadrado inicial, como é mostrado na ilustração seguinte:</p>
+	<img src="img/Curiosidade/5.png" class="img-responsive center-block">
+	<br>
+	<p class="wp wp-7">Desta vez, quando se verifica os quadrados adjacentes é possível perceber que o quadrado imediatamente a direita é um quadrado de parede, assim ele é ignorado o ignoramos. O mesmo acontece para o quadrado que está acima. </p>
+	<p class="wp wp-7">Isso limita a apenas cinco quadrados restantes.  Os outros dois quadrados debaixo do quadrado atual ainda não estão na lista aberta, assim ele são adicionados e o quadrado atual se torna o pai deles. Dos outros três quadrados, dois estão já na lista fechada (o quadrado inicial, e o anterior ao quadrado atual, ambos realçados por dentro em azul no diagrama), assim eles são ignorados. E o último quadrado, imediatamente a esquerda do quadrado atual, é conferido para ver se a contagem de G for mais baixa ao passar pelo quadrado atual para chegar lá. Assim encerra-se e está pronto para a inspeção do próximo quadrado da lista aberta.</p>
+	<p class="wp wp-7">O processo é repetido até que seja acrescentado o quadrado alvo à lista fechada, tal como se parece a ilustração abaixo.</p>
+	<img src="img/Curiosidade/6.png" class="img-responsive center-block">
+	<br>	
+	<p class="wp wp-7">Note que o quadrado pai para os dois quadrados abaixo do quadrado inicial mudou da ilustração prévia. Antes ele tinha uma contagem G = 28 e apontou para o quadrado acima e a direita dele. Agora tem uma contagem de 20 e aponta ao quadrado logo acima dele. Isto aconteceu em algum lugar no caminho da nossa procura onde a contagem de G foi conferida e se mostrou ser mais baixa usando um caminho novo. Assim, o pai foi trocado e as contagens de G e F foram recalculadas. Enquanto esta mudança pode não parecer muito importante neste exemplo, existem muitas situações possíveis onde esta verificação constante fará toda a diferença determinando o melhor caminho a seu objetivo.</p>
+	<p class="wp wp-7">O caminho pode ser determinado então da seguinte maneira: comece do quadrado designado em vermelho, e trabalhe, movendo para trás de um quadrado à seu pai, seguindo as setas. Isto o levará de volta eventualmente ao quadrado inicial, e isto é seu caminho. Deveria se parecer com a ilustração seguinte. Movendo do quadrado inicial A ao quadrado de destino B é simplesmente uma questão de mover do centro de cada quadrado (o nó) para o centro do próximo quadrado no caminho, até que você alcança o objetivo.</p>
+	<img src="img/Curiosidade/7.png" class="img-responsive center-block">
+	<br>
+	<h4 class="text-xs-center">Resumo do Método A *</h4>
+	<ol> <!-- ordered list -->
+              <li> Adicione o quadrado inicial à lista aberta. </li>
+              <li>Repita o seguinte: </li>
+			  <ol>
+			  	<li>Procure o quadrado que tenha o menor custo de F na lista aberta. Recebe o nome de quadrado corrente.</li>
+			  	<li>Mova-o para a lista fechada.</li>
+			  	<li>Para cada um dos 8 quadrados adjacente a este quadrado corrente: Se não é passável ou se estiver na lista fechada, ignore. Caso contrário faça o seguinte:</li>
+				<ol>
+					<li>Se não estiver na lista aberta, acrescente-o à lista aberta. Faça o quadrado atual o pai deste quadrado. Grave os custos F, G, e H do quadrado. </li>
+					<li>Se já estiver na lista aberta, confere para ver se este caminho para aquele quadrado é melhor, usando custo G como medida. Um valor G mais baixo mostra que este é um caminho melhor. Nesse caso, mude o pai do quadrado para o quadrado atual, e recalcule os valores de G e F do quadrado. Se você está mantendo sua lista aberta ordenada por F, você pode precisar reordenar a lista para corresponder a mudança. </li>
+				</ol>
+			  </ol>
+              <li>Pare quando você:</li>
+	      	<ol>
+			<li>Acrescente o quadrado alvo à lista fechada o que determina que o caminho foi achado, ou</li>		
+			<li>Não ache o quadrado alvo, e a lista aberta está vazia. Neste caso, não há nenhum caminho.</li>
+		</ol>
+              <li>Salve o caminho. Caminhando para trás do quadrado alvo, vá de cada quadrado a seu quadrado pai até que você alcance o quadrado inicial. Isso é seu caminho.</li>
+	</ol>
+
+
+
+      </div>
+    </section>
+
+    <!-- Footer
+    ================================================== -->
+    <footer class="section-footer bg-inverse" role="contentinfo">
+      <!-- <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-lg-5">
+            <div class="media">
+              <div class="media-left">
+                <span class="media-object icon-logo display-1"></span>
+              </div>
+              <small class="media-body media-bottom">
+                &copy; Land.io 2015. <br>
+                Designed by Peter Finlan, developed by Taty Grassini, exclusively for Codrops.
+              </small>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-7">
+            <ul class="nav nav-inline">
+              <li class="nav-item">
+                <a class="nav-link" href="./index-carousel.html"><small>NEW</small> Slides<span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item"><a class="nav-link" href="ui-elements.html">UI Kit</a></li>
+              <li class="nav-item"><a class="nav-link" href="https://github.com/tatygrassini/landio-html" target="_blank">GitHub</a></li>
+              <li class="nav-item"><a class="nav-link scroll-top" href="#totop">Back to top <span class="icon-caret-up"></span></a></li>
+            </ul>
+          </div>
+        </div>
+      </div> -->
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="js/landio.min.js"></script>
+  </body>
+</html>
