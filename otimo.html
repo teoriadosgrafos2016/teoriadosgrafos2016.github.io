@@ -42,13 +42,13 @@
         <h3 class="text-xs-center">Árvores de caminhos ótimos em grafos e o problema da classificação supervisionada</h3>
 		<br>
 			<h4 class="text-xs-center">Objetivos</h4>
-            <p class="wp wp-8">A posuere donec senectus suspendisse bibendum magna ridiculus a justo orci parturient suspendisse ad rhoncus cursus ut parturient viverra elit aliquam ultrices est sem. Tellus nam ad fermentum ac enim est duis facilisis congue a lacus adipiscing consequat risus consectetur scelerisque integer suspendisse a mus integer elit massa ut.</p>
+            <p class="wp wp-8"> Escolher um dataset específico (grafo ponderado armazenado em arquivo.gml, .graphml, .txt, .net, etc) e implementar o algoritmo de Dijkstra para extrair uma árvore de caminhos mínimos de G. Observar e analisar a “disputa” de vértices que ocorre na formação dos agrupamentos.</p>
 			<h4 class="text-xs-center">Implementação</h4>
 			<p class="wp wp-8">O algoritmo de Dijkstra identifica, a partir de um vértice do grafo, qual é o custo mínimo entre esse vértice e todos os outros do grafo. No início, o conjunto S contém somente esse vértice, chamado origem. A cada passo, seleciona-se no conjunto de vértices sobrando, o mais próximo da origem. Depois se atualiza, para cada vértice sobrando, a sua distância em relação à origem. Se passando pelo novo vértice acrescentado, a distância fica menor, é essa nova distância que será memorizada.</p>
 			<h5>Algoritmo:</h5>
 			
 
-			<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0; line-height: 125%"> 1
+<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0; line-height: 125%"> 1
  2
  3
  4
@@ -151,14 +151,14 @@
 
 <span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">main</span>():
 
-    G <span style="color: #333333">=</span> nx<span style="color: #333333">.</span>read_weighted_edgelist(<span style="background-color: #fff0f0">&quot;/home/felipe/pycharmprojects/Grafos/Grafo.txt&quot;</span>)
+    G <span style="color: #333333">=</span> nx<span style="color: #333333">.</span>read_weighted_edgelist(<span style="background-color: #fff0f0">&quot;../Grafo.txt&quot;</span>)
 
-    TREE <span style="color: #333333">=</span> Dijkstra(G,[<span style="background-color: #fff0f0">&#39;1&#39;</span>,<span style="background-color: #fff0f0">&#39;18&#39;</span>])
+    TREE <span style="color: #333333">=</span> Dijkstra(G,[<span style="background-color: #fff0f0">&#39;1&#39;</span>,<span style="background-color: #fff0f0">&#39;18&#39;</span>,<span style="background-color: #fff0f0">&#39;9&#39;</span>])
 
     pos <span style="color: #333333">=</span> nx<span style="color: #333333">.</span>circular_layout(G)
 
     Desenha(G, pos, <span style="background-color: #fff0f0">&#39;r&#39;</span>, <span style="background-color: #fff0f0">&#39;GrafoOriginal&#39;</span>)
-    Desenha(TREE, pos, <span style="background-color: #fff0f0">&#39;g&#39;</span>, <span style="background-color: #fff0f0">&#39;AposDijkstra&#39;</span>)
+    Desenha(TREE, pos, <span style="background-color: #fff0f0">&#39;g&#39;</span>, <span style="background-color: #fff0f0">&#39;AposDijkstra(raizes 1 18 e 9)&#39;</span>)
 
 <span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">Desenha</span>(G, pos,lineColor, filename):
 
@@ -170,7 +170,7 @@
     labels <span style="color: #333333">=</span> nx<span style="color: #333333">.</span>get_edge_attributes(G, <span style="background-color: #fff0f0">&#39;weight&#39;</span>)
     nx<span style="color: #333333">.</span>draw_networkx_edge_labels(G, pos, edge_labels<span style="color: #333333">=</span>labels, font_size<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">8</span>)
 
-    plt<span style="color: #333333">.</span>savefig(<span style="background-color: #fff0f0">&#39;/home/felipe/pycharmprojects/Grafos/dijkstraImages/&#39;</span><span style="color: #333333">+</span>filename<span style="color: #333333">+</span><span style="background-color: #fff0f0">&#39;.png&#39;</span>,dpi<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">250</span>)
+    plt<span style="color: #333333">.</span>savefig(<span style="background-color: #fff0f0">&#39;dijkstraImages/&#39;</span><span style="color: #333333">+</span>filename<span style="color: #333333">+</span><span style="background-color: #fff0f0">&#39;.png&#39;</span>,dpi<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">250</span>)
     plt<span style="color: #333333">.</span>clf()
 
 <span style="color: #008800; font-weight: bold">if</span> __name__<span style="color: #333333">==</span><span style="background-color: #fff0f0">&#39;__main__&#39;</span>:

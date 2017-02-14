@@ -50,7 +50,6 @@
 		<p class="wp wp-8">O algoritmo de Prim: Seja T uma árvore do grafo G. A lista L de T é o conjunto de todas as arestas de G que têm uma ponta em T e outra fora.  Portanto, a lista L de T nada mais é que o conjunto de vértices de T.</p>
 		<p class="wp wp-8">Cada iteração do algoritmo de Prim começa com uma subárvore T. No início da primeira iteração, T consiste em um único vértice.</p>
 		<p class="wp wp-8">O algoritmo de Prim tem caráter guloso: em cada iteração, pega a aresta mais barata da lista sem se preocupar com o efeito global dessa escolha.  A prova de que essa estratégia está correta segue do critério de minimalidade baseado em cortes.</p>
-		<p class="wp wp-8">Após aplicação do script criado em um  um dataset (grafo ponderado) será feita uma análise dos resultados obtidos, após o script gerar a MST para o referido dataset.</p>
 		<h5>Algoritomo:</h5>
 
 
@@ -155,7 +154,7 @@
 
 <span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">main</span>():
 
-    G <span style="color: #333333">=</span> nx<span style="color: #333333">.</span>read_weighted_edgelist(<span style="background-color: #fff0f0">&quot;/home/felipe/pycharmprojects/Grafos/Grafo.txt&quot;</span>)
+    G <span style="color: #333333">=</span> nx<span style="color: #333333">.</span>read_weighted_edgelist(<span style="background-color: #fff0f0">&quot;../Grafo.txt&quot;</span>)
 
     MST <span style="color: #333333">=</span> MST_Prim(G,<span style="background-color: #fff0f0">&#39;1&#39;</span>)
 
@@ -173,7 +172,7 @@
     labels <span style="color: #333333">=</span> nx<span style="color: #333333">.</span>get_edge_attributes(G, <span style="background-color: #fff0f0">&#39;weight&#39;</span>)
     nx<span style="color: #333333">.</span>draw_networkx_edge_labels(G, pos, edge_labels<span style="color: #333333">=</span>labels, font_size<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">8</span>)
 
-    plt<span style="color: #333333">.</span>savefig(<span style="background-color: #fff0f0">&#39;/home/felipe/pycharmprojects/Grafos/primImages/&#39;</span><span style="color: #333333">+</span>filename<span style="color: #333333">+</span><span style="background-color: #fff0f0">&#39;.png&#39;</span>,dpi<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">250</span>)
+    plt<span style="color: #333333">.</span>savefig(<span style="background-color: #fff0f0">&#39;primImages/&#39;</span><span style="color: #333333">+</span>filename<span style="color: #333333">+</span><span style="background-color: #fff0f0">&#39;.png&#39;</span>,dpi<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">250</span>)
     plt<span style="color: #333333">.</span>clf()
 
 <span style="color: #008800; font-weight: bold">if</span> __name__<span style="color: #333333">==</span><span style="background-color: #fff0f0">&quot;__main__&quot;</span>:
