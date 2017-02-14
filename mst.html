@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Teoria dos Grafos</title>
+    <title>MST</title>
 
     <meta name="msapplication-TileColor" content="#05162a">
     <meta name="theme-color" content="#05162a">
@@ -39,15 +39,171 @@
     ================================================== -->
     <section class="section-text">
       <div class="container">
-        <h3 class="text-xs-center">Título do Trabalho</h3>
+        <h3 class="text-xs-center">Árvores geradoras mínimas e comunidades</h3>
         <div class="row p-y-3">
           <div class="col-md-5">
-            <p class="wp wp-7">A posuere donec senectus suspendisse bibendum magna ridiculus a justo orci parturient suspendisse ad rhoncus cursus ut parturient viverra elit aliquam ultrices est sem. Tellus nam ad fermentum ac enim est duis facilisis congue a lacus adipiscing consequat risus consectetur scelerisque integer suspendisse a mus integer elit massa ut.</p>
+			<h4 class="text-xs-center">Objetivos do Trabalho</h4>
+            <p class="wp wp-7">Escolher um dataset específico (grafo ponderado armazenado em arquivo.gml, .graphml, .txt, .net, etc) e implementar o algoritmo de Prim para extrair uma Minimum Spanning Tree (MST) de G.</p>
           </div>
           <div class="col-md-5 col-md-offset-2 separator-x">
-            <p class="wp wp-8">A posuere donec senectus suspendisse bibendum magna ridiculus a justo orci parturient suspendisse ad rhoncus cursus ut parturient viverra elit aliquam ultrices est sem. Tellus nam ad fermentum ac enim est duis facilisis congue a lacus adipiscing consequat risus consectetur scelerisque integer suspendisse a mus integer elit massa ut.</p>
+			<h4 class="text-xs-center">MST</h4>
+            <p class="wp wp-8">Seja G um grafo com custos nas arestas.  (Os custos podem ser positivos, negativos, ou nulos.) O custo de um subgrafo T de G é a soma dos custos das arestas de T.</p>
+			<p class="wp wp-8">Árvore geradora de custo mínimo (MST): Uma árvore geradora mínima (= minimum spanning tree) de G é qualquer árvore geradora de G que tenha custo mínimo.  Em outras palavras, uma árvore geradora T de G é mínima se nenhuma outra árvore geradora tem custo estritamente menor que o de T. Árvores geradoras mínimas também são conhecidas pela sigla MST.</p>
           </div>
         </div>
+		<h4 class="text-xs-center">Implementação</h4>
+		<p class="wp wp-8">O algoritmo de Prim: Seja T uma árvore do grafo G. A lista L de T é o conjunto de todas as arestas de G que têm uma ponta em T e outra fora.  Portanto, a lista L de T nada mais é que o conjunto de vértices de T.</p>
+		<p class="wp wp-8">Cada iteração do algoritmo de Prim começa com uma subárvore T. No início da primeira iteração, T consiste em um único vértice.</p>
+		<p class="wp wp-8">O algoritmo de Prim tem caráter guloso: em cada iteração, pega a aresta mais barata da lista sem se preocupar com o efeito global dessa escolha.  A prova de que essa estratégia está correta segue do critério de minimalidade baseado em cortes.</p>
+		<p class="wp wp-8">Após aplicação do script criado em um  um dataset (grafo ponderado) será feita uma análise dos resultados obtidos, após o script gerar a MST para o referido dataset.</p>
+		<h5>Algoritomo:</h5>
+
+
+
+<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0; line-height: 125%"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62</pre></td><td><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">networkx</span> <span style="color: #008800; font-weight: bold">as</span> <span style="color: #0e84b5; font-weight: bold">nx</span> <span style="color: #888888">#Para a parte de criar e gerenciar grafos</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">numpy</span> <span style="color: #008800; font-weight: bold">as</span> <span style="color: #0e84b5; font-weight: bold">np</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">matplotlib.pyplot</span> <span style="color: #008800; font-weight: bold">as</span> <span style="color: #0e84b5; font-weight: bold">plt</span> <span style="color: #888888">#Para exibir na tela</span>
+
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">MST_Prim</span>(G,r):
+    Q <span style="color: #333333">=</span> [] <span style="color: #888888"># Fila de prioridades</span>
+
+    <span style="color: #008800; font-weight: bold">for</span> v <span style="color: #000000; font-weight: bold">in</span> G<span style="color: #333333">.</span>nodes():
+        <span style="color: #008800; font-weight: bold">if</span> v <span style="color: #000000; font-weight: bold">is</span> r:
+            G<span style="color: #333333">.</span>node[v][<span style="background-color: #fff0f0">&#39;lambda&#39;</span>] <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+        <span style="color: #008800; font-weight: bold">else</span>:
+            G<span style="color: #333333">.</span>node[v][<span style="background-color: #fff0f0">&#39;lambda&#39;</span>] <span style="color: #333333">=</span> np<span style="color: #333333">.</span>Infinity
+
+        G<span style="color: #333333">.</span>node[v][<span style="background-color: #fff0f0">&#39;predecessor&#39;</span>] <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">None</span>
+        Q<span style="color: #333333">.</span>append([v, G<span style="color: #333333">.</span>node[v][<span style="background-color: #fff0f0">&#39;lambda&#39;</span>]])
+
+    S <span style="color: #333333">=</span> [] <span style="color: #888888"># Ja finalizados</span>
+    <span style="color: #008800; font-weight: bold">while</span>(Q):
+        Q<span style="color: #333333">.</span>sort(key<span style="color: #333333">=</span><span style="color: #008800; font-weight: bold">lambda</span> item: item[<span style="color: #0000DD; font-weight: bold">1</span>])
+        u <span style="color: #333333">=</span> Q<span style="color: #333333">.</span>pop(<span style="color: #0000DD; font-weight: bold">0</span>)
+        S<span style="color: #333333">.</span>append(u[<span style="color: #0000DD; font-weight: bold">0</span>])
+        <span style="color: #008800; font-weight: bold">for</span> v <span style="color: #000000; font-weight: bold">in</span> G<span style="color: #333333">.</span>neighbors(u[<span style="color: #0000DD; font-weight: bold">0</span>]):
+            <span style="color: #008800; font-weight: bold">if</span> (v <span style="color: #000000; font-weight: bold">not</span> <span style="color: #000000; font-weight: bold">in</span> S):
+                <span style="color: #008800; font-weight: bold">if</span> (G<span style="color: #333333">.</span>node[v][<span style="background-color: #fff0f0">&#39;lambda&#39;</span>] <span style="color: #333333">&gt;=</span> G<span style="color: #333333">.</span>edge[u[<span style="color: #0000DD; font-weight: bold">0</span>]][v][<span style="background-color: #fff0f0">&#39;weight&#39;</span>]):
+                    Q<span style="color: #333333">.</span>remove([v, G<span style="color: #333333">.</span>node[v][<span style="background-color: #fff0f0">&#39;lambda&#39;</span>]])
+                    G<span style="color: #333333">.</span>node[v][<span style="background-color: #fff0f0">&#39;lambda&#39;</span>] <span style="color: #333333">=</span> G<span style="color: #333333">.</span>edge[u[<span style="color: #0000DD; font-weight: bold">0</span>]][v][<span style="background-color: #fff0f0">&#39;weight&#39;</span>]
+                    G<span style="color: #333333">.</span>node[v][<span style="background-color: #fff0f0">&#39;predecessor&#39;</span>] <span style="color: #333333">=</span> u[<span style="color: #0000DD; font-weight: bold">0</span>]
+                    Q<span style="color: #333333">.</span>append([v, G<span style="color: #333333">.</span>node[v][<span style="background-color: #fff0f0">&#39;lambda&#39;</span>]])
+    MST <span style="color: #333333">=</span> nx<span style="color: #333333">.</span>Graph()
+    MST<span style="color: #333333">.</span>add_nodes_from(G<span style="color: #333333">.</span>nodes())
+    <span style="color: #008800; font-weight: bold">for</span> v <span style="color: #000000; font-weight: bold">in</span> S:
+        <span style="color: #008800; font-weight: bold">if</span> G<span style="color: #333333">.</span>node[v][<span style="background-color: #fff0f0">&#39;predecessor&#39;</span>] <span style="color: #333333">!=</span> <span style="color: #008800; font-weight: bold">None</span>:
+            u <span style="color: #333333">=</span> G<span style="color: #333333">.</span>node[v][<span style="background-color: #fff0f0">&#39;predecessor&#39;</span>]
+            MST<span style="color: #333333">.</span>add_edge(v, u, weight<span style="color: #333333">=</span>G<span style="color: #333333">.</span>edge[v][u][<span style="background-color: #fff0f0">&#39;weight&#39;</span>])
+
+    <span style="color: #008800; font-weight: bold">return</span> MST
+
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">main</span>():
+
+    G <span style="color: #333333">=</span> nx<span style="color: #333333">.</span>read_weighted_edgelist(<span style="background-color: #fff0f0">&quot;/home/felipe/pycharmprojects/Grafos/Grafo.txt&quot;</span>)
+
+    MST <span style="color: #333333">=</span> MST_Prim(G,<span style="background-color: #fff0f0">&#39;1&#39;</span>)
+
+    pos <span style="color: #333333">=</span> nx<span style="color: #333333">.</span>circular_layout(G)
+    Desenha(G, pos, <span style="background-color: #fff0f0">&#39;r&#39;</span>, <span style="background-color: #fff0f0">&#39;GrafoOriginal&#39;</span>)
+    Desenha(MST, pos, <span style="background-color: #fff0f0">&#39;g&#39;</span>, <span style="background-color: #fff0f0">&#39;MST&#39;</span>)
+
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">Desenha</span>(G, pos,lineColor, filename):
+
+    nx<span style="color: #333333">.</span>draw_networkx_nodes(G, pos, node_color<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;b&#39;</span>, node_size<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">150</span>)
+    nx<span style="color: #333333">.</span>draw_networkx_edges(G, pos, edgelist<span style="color: #333333">=</span>G<span style="color: #333333">.</span>edges(), edge_color<span style="color: #333333">=</span>lineColor, arrows<span style="color: #333333">=</span><span style="color: #008800; font-weight: bold">True</span>)
+
+    nx<span style="color: #333333">.</span>draw_networkx_labels(G, pos, font_size<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">8</span>)
+
+    labels <span style="color: #333333">=</span> nx<span style="color: #333333">.</span>get_edge_attributes(G, <span style="background-color: #fff0f0">&#39;weight&#39;</span>)
+    nx<span style="color: #333333">.</span>draw_networkx_edge_labels(G, pos, edge_labels<span style="color: #333333">=</span>labels, font_size<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">8</span>)
+
+    plt<span style="color: #333333">.</span>savefig(<span style="background-color: #fff0f0">&#39;/home/felipe/pycharmprojects/Grafos/primImages/&#39;</span><span style="color: #333333">+</span>filename<span style="color: #333333">+</span><span style="background-color: #fff0f0">&#39;.png&#39;</span>,dpi<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">250</span>)
+    plt<span style="color: #333333">.</span>clf()
+
+<span style="color: #008800; font-weight: bold">if</span> __name__<span style="color: #333333">==</span><span style="background-color: #fff0f0">&quot;__main__&quot;</span>:
+    main()
+</pre></td></tr></table></div>
+
+
+<br><br>
+
+		<h5>Resultados:</h5>
+		<p class="wp wp-8">Grafo Original</p>
+		<img src="../implementacoes/primImages/GrafoOriginal.png" class="img-responsive center-block img-fluid">
+		<br>
+
+		<p class="wp wp-8">Árvore geradora mínima do grafo acima</p>		
+		<img src="../implementacoes/primImages/MST.png" class="img-responsive center-block img-fluid">
+		<br>
+
+		<p class="wp wp-8">Grafo simplificado para melhor visualização do algoritmo</p>
+		<img src="../implementacoes/primImages/Exemplo Simples/GrafoOriginal.png" class="img-responsive center-block img-fluid">
+		<br>
+
+		<img src="../implementacoes/primImages/Exemplo Simples/MST.png" class="img-responsive center-block img-fluid">
+		<br>
+		<p class="wp wp-8"></p>
       </div>
     </section>
 
